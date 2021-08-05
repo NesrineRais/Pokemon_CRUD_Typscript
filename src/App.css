@@ -38,3 +38,7 @@
     height: 150px;
 
 }
+
+.card.horizontal .card-image img{
+  height: 144px;
+}

@@ -22,13 +22,13 @@ const PokemonEdit : FunctionComponent<RouteComponentProps<Params>>=({match})=>{
    
 
     return(
-        <div>
+        <div className="container">
             
             {pokemon ? (
                 
                 //definit props pokemon  pour passer une pokemon
-              <div> 
-                  <h2>Editer le {pokemon.name} </h2>
+                <div> 
+                  <h2 className="center">Editer le {pokemon.name} </h2>
                   <PokemonForm pokemone={pokemon}/>
                 </div>
             ):(
