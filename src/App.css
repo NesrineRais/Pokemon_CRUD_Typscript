@@ -42,3 +42,7 @@
 .card.horizontal .card-image img{
   height: 144px;
 }
+
+.chip{
+  margin-top: 0;
+}

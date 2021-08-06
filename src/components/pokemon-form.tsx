@@ -2,6 +2,7 @@ import React,{FunctionComponent,useEffect,useState}  from "react";
 import Pokemon from "../models/pokemon"
 import POKEMONS from "../models/mock-pokemon"
 import formatType from '../helpers/format-type';
+import { types } from '@babel/core';
 
 type Props={
     pokemone: Pokemon
@@ -11,9 +12,9 @@ type Props={
 
 //modalisation champs dans le formulaire
 type Field={
-    value:any,
-    erroe?:string,
-    isValid?:boolean
+    value?: any,
+    error?: string,
+    isValid?: boolean
 }
 
 //modalisation type form
@@ -22,11 +23,14 @@ type Form = {
     name:Field,
     hp:Field,
     cp:Field,
-    types: Field
+    types: Field,
+
 }
 
 const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
+
     const [form, setForm] = useState<Form>({
+        
         name: {value:pokemone.name, isValid:true},
         hp:{value:pokemone.hp,isValid:true},
         cp:{value:pokemone.cp,isValid:true},
@@ -38,8 +42,58 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
         'Poison', 'Fée', 'Vol', 'Combat', 'Psy'
       ];
    
-    const hastype = (type:string):boolean=>{
+    const hasType = (type:string):boolean=>{
         return form.types.value.includes(type);
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+        const fieldName: string = e.target.name;
+        //console.log(fieldName)
+        const fieldValue: string = e.target.value;
+        //console.log(fieldValue)
+        const newField: Field = { [fieldName]: { value: fieldValue } };
+
+
+        //console.log("form",{...form})
+        //console.log("newField",{...newField})
+
+        setForm({ ...form, ...newField});
+        //new state 
+        //valeur newfiled écrase l'ancien valeur du form  
+        //syntax ecmascript6 nommé Spread operator
+    }
+    const selectType= (type: string,e: React.ChangeEvent<HTMLInputElement>): void=>{
+
+        const checked = e.target.checked;
+        let newField: Field;
+        console.log("type",type)
+
+        if(checked) {
+            console.log("type if checked",type)
+            //si l utilisateur coche un type, à l ajout des types de pokemeon
+            const newTypes: string[] = form.types.value.concat([type]);
+            newField = {value : newTypes}
+            //console.log("newField checked",newField)
+            //console.log("newTypes",newTypes)
+
+        }else{
+            //si usuer décoche un type on le retire de la liste des types de pokémon.
+            const newTypes: string[] = form.types.value.filter((currentTypes: string) => 
+                  currentTypes !== type
+            );
+            //console.log(newTypes)
+            newField = {value : newTypes}
+            //console.log("newField else",newField)
+
+        }
+
+        setForm({...form,...{types:newField}})
+        //console.log("{...newField}",{...{types:newField}})
+        //console.log("{...form}",{...form})
+
+
+        //si user coche un type, à l ajoute à la liste de type pokémone
+
     }
     return(
        <form>
@@ -55,27 +109,36 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                  <label htmlFor="name">Nom</label>
                                 <input
                                      id="name" 
+                                     name="name"
                                      type="text" 
                                      className="form-control" 
                                      value={form.name.value}
+                                     onChange={e=> handleInputChange(e)}
                                 />
                                     
                             </div>
                             {/* Pokemon hp */}
                             <div className="form-group">
                                  <label htmlFor="hp">Point de vie</label>
-                                 <input id="hp" type="number"
-                                  className="form-control"
-                                  value={form.hp.value}
+                                 <input 
+                                    id="hp" 
+                                    name="hp"
+                                    type="number"
+                                     className="form-control"
+                                     value={form.hp.value}
+                                    onChange={e=>handleInputChange(e)}
                                 />
                             </div>
                             {/* Pokemon cp */}
                             <div className="form-group">
                                  <label htmlFor="cp">Dégâts</label>
-                                 <input id="cp"
-                                  type="number" 
-                                  className="form-control" 
-                                  value={form.cp.value}
+                                 <input 
+                                    id="cp"
+                                    name="cp"
+                                    type="number" 
+                                    className="form-control" 
+                                    value={form.cp.value}
+                                    onChange={e=>handleInputChange(e)}
                                 />
                             </div>
                             {/* Pokemon types */}
@@ -88,7 +151,9 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                             id={type} 
                                             type="checkbox"
                                             className="filled-in"
-                                            checked={hastype(type)}
+                                            checked={hasType(type)}
+                                            onChange={e=>selectType(type,e)}
+                                            //type c'est le type de pokemon et e c 'est l evenemnt cocher et decocher
                                         />
                                         <span>
                                               <p className={formatType(type)}>{ type }</p>
