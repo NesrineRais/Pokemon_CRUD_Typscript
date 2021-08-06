@@ -1,8 +1,11 @@
 import React,{FunctionComponent,useEffect,useState}  from "react";
+import {Link, Redirect,useHistory} from 'react-router-dom';
 import Pokemon from "../models/pokemon"
 import POKEMONS from "../models/mock-pokemon"
 import formatType from '../helpers/format-type';
 import { types } from '@babel/core';
+
+
 
 type Props={
     pokemone: Pokemon
@@ -11,13 +14,14 @@ type Props={
 //declaration types modelisation formulaire
 
 //modalisation champs dans le formulaire
+//chaque champs a une valeur,message d eroor et propriété si valid ou nn
 type Field={
     value?: any,
     error?: string,
     isValid?: boolean
 }
 
-//modalisation type form
+//declare le formulaire avec les champs qui existe
 
 type Form = {
     name:Field,
@@ -37,16 +41,23 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
         types:{value:pokemone.types,isValid:true}
 
     });
+    //de la ligne 38 a 41 on declare les states qui représente les champs et les donné et de formulaire
+    const history = useHistory();
+
     const types: string[] = [
         'Plante', 'Feu', 'Eau', 'Insecte', 'Normal', 'Electrik',
         'Poison', 'Fée', 'Vol', 'Combat', 'Psy'
-      ];
-   
+    ];
+    //methode "hasType" prend en parametre le "type" et renvois(boolean) :
+    //si ce type apartient au pokemon ou nn
+    //si c'est le cas  la case de type sa sera cocher si non elle reste n est pas cocher
     const hasType = (type:string):boolean=>{
         return form.types.value.includes(type);
     }
+    //methode hastype renvois un booleen permettant de savoir si ce type passer en parametre appartient au pokemon oi ou nn
+    //on utilise methode javascript includes pour savoir si c'est le bon type oui ou nn
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>):void =>{
         const fieldName: string = e.target.name;
         //console.log(fieldName)
         const fieldValue: string = e.target.value;
@@ -91,12 +102,78 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
         //console.log("{...newField}",{...{types:newField}})
         //console.log("{...form}",{...form})
 
-
         //si user coche un type, à l ajoute à la liste de type pokémone
 
     }
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>)=>{
+        e.preventDefault();
+        const isFomValid = valiateForm()
+
+        if(isFomValid){
+            history.push(`/List/${pokemone.id}`)
+
+        }
+
+    }
+
+    //methode verification régle des champs
+    const valiateForm =() =>{
+        let newForm: Form = form;
+        //validator name
+       // Validator name
+       //regex : [a-zA-Zàéè ] accept caracter de a à z et majuscul 
+       //{3,25} accepte de 3 a 25 caracter
+        if(!/^[a-zA-Zàéè ]{3,25}$/.test(form.name.value)) {
+            const errorMsg: string = 'Le nom du pokémon est requis (1-25).';
+            const newField: Field = { value: form.name.value, error: errorMsg, isValid: false };
+            newForm = { ...newForm, ...{ name: newField } };
+        } else {
+            const newField: Field = { value: form.name.value, error: '', isValid: true };
+            newForm = { ...newForm, ...{ name: newField } };
+        }
+  
+        // Validator hp
+        if(!/^[0-9]{1,3}$/.test(form.hp.value)) {
+            const errorMsg: string = 'Les points de vie du pokémon sont compris entre 0 et 999.';
+            const newField: Field = {value: form.hp.value, error: errorMsg, isValid: false};
+            newForm = { ...newForm, ...{ hp: newField } };
+        } else {
+            const newField: Field = { value: form.hp.value, error: '', isValid: true };
+            newForm = { ...newForm, ...{ hp: newField } };
+        }
+    
+        // Validator cp
+        if(!/^[0-9]{1,2}$/.test(form.cp.value)) {
+            const errorMsg: string = 'Les dégâts du pokémon sont compris entre 0 et 99';
+            const newField: Field = {value: form.cp.value, error: errorMsg, isValid: false};
+            newForm = { ...newForm, ...{ cp: newField } };
+        } else {
+            const newField: Field = { value: form.cp.value, error: '', isValid: true };
+            newForm = { ...newForm, ...{ cp: newField } };
+        }
+    
+        setForm(newForm);
+        return newForm.name.isValid && newForm.hp.isValid && newForm.cp.isValid;
+    }
+
+    const isTypesValid = (type:string): boolean=>{
+        if(form.types.value.length === 1 && hasType(type)){
+            return false
+
+        }
+        //si user selection un seule case il faut empecher de deselectionner cette case
+        //appel class hastype pour verifier que nous veruilleon pas des cases que l utilisateuur deja selectionner
+        if(form.types.value.length === 3 && !hasType(type)){
+            return false
+
+        }
+        //si user a selectinner 3 case alors on l enpeche de selectionner un autre 
+        //mais il peut deselctonner un autre type
+        return true
+    }
+   //isTypevalid return true ou false si la case a cocher est verouiller ou nn
     return(
-       <form>
+       <form onSubmit={e=>handleSubmit(e)}>
             <div className="row">
                 <div className="col s12 m8 offset-m2">
                      <div className="card-image">
@@ -112,10 +189,14 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                      name="name"
                                      type="text" 
                                      className="form-control" 
-                                     value={form.name.value}
+                                     value={form.name.value}//la valeur de l input va contenir le state dans le formulaire qui contient name et sa valeur
                                      onChange={e=> handleInputChange(e)}
                                 />
-                                    
+                               {form.name.error && 
+                                    <div className="card-panel red accent-1">
+                                        {form.name.error}
+                                    </div>
+                                }     
                             </div>
                             {/* Pokemon hp */}
                             <div className="form-group">
@@ -128,6 +209,11 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                      value={form.hp.value}
                                     onChange={e=>handleInputChange(e)}
                                 />
+                                {form.hp.error && 
+                                    <div className="card-panel red accent-1">
+                                        {form.hp.error}
+                                    </div>
+                                }  
                             </div>
                             {/* Pokemon cp */}
                             <div className="form-group">
@@ -140,6 +226,11 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                     value={form.cp.value}
                                     onChange={e=>handleInputChange(e)}
                                 />
+                                {form.cp.error && 
+                                    <div className="card-panel red accent-1">
+                                        {form.cp.error}
+                                    </div>
+                                }  
                             </div>
                             {/* Pokemon types */}
                             <div className="form-group">
@@ -151,14 +242,16 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                             id={type} 
                                             type="checkbox"
                                             className="filled-in"
+                                            value={type}
+                                            disabled={!isTypesValid(type)}// ! => si le type n est pas valide nous verrouillons ce case a cocher
                                             checked={hasType(type)}
                                             onChange={e=>selectType(type,e)}
                                             //type c'est le type de pokemon et e c 'est l evenemnt cocher et decocher
                                         />
-                                        <span>
-                                              <p className={formatType(type)}>{ type }</p>
-                                        </span>
-                                    </label>
+                                            <span>
+                                                <p className={formatType(type)}>{ type }</p>
+                                            </span>     
+                                         </label>
                                     </div>
                                 ))}
                             </div>
