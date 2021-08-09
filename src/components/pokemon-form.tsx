@@ -4,6 +4,8 @@ import Pokemon from "../models/pokemon"
 import POKEMONS from "../models/mock-pokemon"
 import formatType from '../helpers/format-type';
 import { types } from '@babel/core';
+import PokemonApi from '../api/pokemon-api';
+
 
 
 
@@ -43,6 +45,7 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
     });
     //de la ligne 38 a 41 on declare les states qui représente les champs et les donné et de formulaire
     const history = useHistory();
+    const [redirect, setRedirect] = useState(false)
 
     const types: string[] = [
         'Plante', 'Feu', 'Eau', 'Insecte', 'Normal', 'Electrik',
@@ -110,7 +113,17 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
         const isFomValid = valiateForm()
 
         if(isFomValid){
-            history.push(`/List/${pokemone.id}`)
+           console.log("pokemone.name",pokemone.name)
+           console.log("form.name.value",form.name.value)
+           pokemone.name=form.name.value
+           pokemone.hp = form.hp.value
+           pokemone.cp = form.cp.value
+           pokemone.types = form.types.value
+            PokemonApi.updatePokemn(pokemone).then((pokemon)=>{
+                
+                history.push(`/List/${pokemone.id}`)
+            })
+           
 
         }
 
@@ -172,98 +185,115 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
         return true
     }
    //isTypevalid return true ou false si la case a cocher est verouiller ou nn
+   const deletePokemon = () =>{
+     
+           PokemonApi.deletePokemon(pokemone).then(()=>{
+               history.push('/List')
+           })
+       
+   }
     return(
-       <form onSubmit={e=>handleSubmit(e)}>
-            <div className="row">
-                <div className="col s12 m8 offset-m2">
-                     <div className="card-image">
-                            <img src={pokemone.picture} alt={pokemone.name} style={{width: '250px', margin: '0 auto'}}/>
-                    </div>
-                     <div className="card-stacked">
-                        <div className="card-content">
-                            {/* Pokemon name */}
-                            <div className="form-group">
-                                 <label htmlFor="name">Nom</label>
-                                <input
-                                     id="name" 
-                                     name="name"
-                                     type="text" 
-                                     className="form-control" 
-                                     value={form.name.value}//la valeur de l input va contenir le state dans le formulaire qui contient name et sa valeur
-                                     onChange={e=> handleInputChange(e)}
-                                />
-                               {form.name.error && 
-                                    <div className="card-panel red accent-1">
-                                        {form.name.error}
-                                    </div>
-                                }     
+        <div>
+            <button onClick={deletePokemon} className="right">
+                                <span className="material-icons  md-18">
+                                    delete
+                                </span>                     
+            </button>
+            <form onSubmit={e=>handleSubmit(e)}>
+                    <div className="row">
+                        <div className="col s12 m8 offset-m2">
+                            
+                            <div className="card-image">
+                                    <img src={pokemone.picture} alt={pokemone.name} style={{width: '250px', margin: '0 auto'}}/>
                             </div>
-                            {/* Pokemon hp */}
-                            <div className="form-group">
-                                 <label htmlFor="hp">Point de vie</label>
-                                 <input 
-                                    id="hp" 
-                                    name="hp"
-                                    type="number"
-                                     className="form-control"
-                                     value={form.hp.value}
-                                    onChange={e=>handleInputChange(e)}
-                                />
-                                {form.hp.error && 
-                                    <div className="card-panel red accent-1">
-                                        {form.hp.error}
-                                    </div>
-                                }  
-                            </div>
-                            {/* Pokemon cp */}
-                            <div className="form-group">
-                                 <label htmlFor="cp">Dégâts</label>
-                                 <input 
-                                    id="cp"
-                                    name="cp"
-                                    type="number" 
-                                    className="form-control" 
-                                    value={form.cp.value}
-                                    onChange={e=>handleInputChange(e)}
-                                />
-                                {form.cp.error && 
-                                    <div className="card-panel red accent-1">
-                                        {form.cp.error}
-                                    </div>
-                                }  
-                            </div>
-                            {/* Pokemon types */}
-                            <div className="form-group">
-                                  <label>Types</label>
-                                {types.map(type => (
-                                    <div key={type} style={{marginBottom: '10px'}}>
-                                    <label>
-                                        <input 
-                                            id={type} 
-                                            type="checkbox"
-                                            className="filled-in"
-                                            value={type}
-                                            disabled={!isTypesValid(type)}// ! => si le type n est pas valide nous verrouillons ce case a cocher
-                                            checked={hasType(type)}
-                                            onChange={e=>selectType(type,e)}
-                                            //type c'est le type de pokemon et e c 'est l evenemnt cocher et decocher
+                        
+                            <div className="card-stacked">
+                                <div className="card-content">
+                                    {/* Pokemon name */}
+                                    <div className="form-group">
+                                        <label htmlFor="name">Nom</label>
+                                        <input
+                                            id="name" 
+                                            name="name"
+                                            type="text" 
+                                            className="form-control" 
+                                            value={form.name.value}//la valeur de l input va contenir le state dans le formulaire qui contient name et sa valeur
+                                            onChange={e=> handleInputChange(e)}
                                         />
-                                            <span>
-                                                <p className={formatType(type)}>{ type }</p>
-                                            </span>     
-                                         </label>
+                                    {form.name.error && 
+                                            <div className="card-panel red accent-1">
+                                                {form.name.error}
+                                            </div>
+                                        }     
                                     </div>
-                                ))}
+                                    {/* Pokemon hp */}
+                                    <div className="form-group">
+                                        <label htmlFor="hp">Point de vie</label>
+                                        <input 
+                                            id="hp" 
+                                            name="hp"
+                                            type="number"
+                                            className="form-control"
+                                            value={form.hp.value}
+                                            onChange={e=>handleInputChange(e)}
+                                        />
+                                        {form.hp.error && 
+                                            <div className="card-panel red accent-1">
+                                                {form.hp.error}
+                                            </div>
+                                        }  
+                                    </div>
+                                    {/* Pokemon cp */}
+                                    <div className="form-group">
+                                        <label htmlFor="cp">Dégâts</label>
+                                        <input 
+                                            id="cp"
+                                            name="cp"
+                                            type="number" 
+                                            className="form-control" 
+                                            value={form.cp.value}
+                                            onChange={e=>handleInputChange(e)}
+                                        />
+                                        {form.cp.error && 
+                                            <div className="card-panel red accent-1">
+                                                {form.cp.error}
+                                            </div>
+                                        }  
+                                    </div>
+                                    {/* Pokemon types */}
+                                    <div className="form-group">
+                                        <label>Types</label>
+                                        {types.map(type => (
+                                            <div key={type} style={{marginBottom: '10px'}}>
+                                            <label>
+                                                <input 
+                                                    id={type} 
+                                                    type="checkbox"
+                                                    className="filled-in"
+                                                    value={type}
+                                                    disabled={!isTypesValid(type)}// ! => si le type n est pas valide nous verrouillons ce case a cocher
+                                                    checked={hasType(type)}
+                                                    onChange={e=>selectType(type,e)}
+                                                    //type c'est le type de pokemon et e c 'est l evenemnt cocher et decocher
+                                                />
+                                                    <span>
+                                                        <p className={formatType(type)}>{ type }</p>
+                                                    </span>     
+                                                </label>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="card-action center">
+                                    {/* Submit button */}
+                                    <button type="submit" className="btn">Valider</button>
+                                </div>
                             </div>
                         </div>
-                        <div className="card-action center">
-                            {/* Submit button */}
-                            <button type="submit" className="btn">Valider</button>
-                        </div>
                     </div>
-                </div>
-            </div>
-       </form> 
+            </form>  
+        </div>
+        
     )
 }   
 

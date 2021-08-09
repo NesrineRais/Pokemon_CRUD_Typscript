@@ -25,7 +25,7 @@ const PokemonDetail : FunctionComponent<RouteComponentProps<Params>>=({match})=>
     
     return(
         <div>
-            {pokemon ? (
+            {pokemon &&
                  <div className="row">
                      <div className="col s12 m8 offset-m2">
                         <div className="card hoverable"> 
@@ -40,8 +40,11 @@ const PokemonDetail : FunctionComponent<RouteComponentProps<Params>>=({match})=>
                                                     <span className="material-icons md-18">
                                                           mode_edit_outline
                                                     </span>
+                                                   
                                                     
                                                 </Link>
+                                                
+
 
                                             </div>
                                         </div>
@@ -84,9 +87,7 @@ const PokemonDetail : FunctionComponent<RouteComponentProps<Params>>=({match})=>
                         </div>
                     </div>
                 </div>
-            ):(
-                <div>il y a pas de pokemon</div>
-            )}
+            }
         </div>
         
            

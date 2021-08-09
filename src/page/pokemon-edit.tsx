@@ -21,29 +21,21 @@ const PokemonEdit : FunctionComponent<RouteComponentProps<Params>>=({match})=>{
         })
 
 
-        // POKEMANS.forEach((pokemon)=>{
-        //     //console.log(pokemon)
-        //     if(match.params.id === pokemon.id.toString()){
-        //         setPokemon(pokemon)
-        //     }
-        // })
+        
     },[match.params.id])
    
 
     return(
         <div className="container">
             
-            {pokemon ? (
+            {pokemon && 
                 
                 //definit props pokemon  pour passer une pokemon
                 <div> 
                   <h2 className="center">Editer le {pokemon.name} </h2>
                   <PokemonForm pokemone={pokemon}/>
                 </div>
-            ):(
-                <div>N'existe pas ce pokemon</div>
-            )}
-
+            }
         </div>
     )
 }

@@ -18,8 +18,7 @@ const PokemonList: FunctionComponent = () =>{
                         {pokmons.map((pokmon)=>{
                             //console.log(pokmon)
                             //pokemon c est le props dans pokeemon card
-                            return( <PokemonCard key={pokmon.id} pokemon={pokmon} />
-                                )
+                            return( <PokemonCard key={pokmon.id} pokemon={pokmon} /> )
                         })}
                  </div>
          </div>

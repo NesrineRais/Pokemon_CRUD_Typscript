@@ -30,30 +30,33 @@ const PokemonCard : FunctionComponent<Props> = ({pokemon, borderColor='#009688'}
         history.push(`/List/${id}`)
     }
     return (
+      
         <div className="col s6 m4" onMouseEnter={showBorder} onMouseLeave={hideBorder} onClick={()=>goToPokemon(pokemon.id)}>
-       {/*methode redirect { redirect && <Redirect to={"/List/"+pokemon.id} /> }*/}
-
-            <div className="card horizontal" style={{ borderColor:color }}> {/* borderColor(c'est le props qu on a définit dans les props) */}
-                <div className="card-image"> 
-                    <img src={pokemon.picture} alt={pokemon.name} className="center"/>
+              {/*methode redirect { redirect && <Redirect to={"/List/"+pokemon.id} /> }*/}
+            
+                    <div className="card horizontal" style={{ borderColor:color }}> {/* borderColor(c'est le props qu on a définit dans les props) */}
+                        <div className="card-image"> 
+                            <img src={pokemon.picture} alt={pokemon.name} className="center"/>
+                        </div>
+                        <div className="card-stacked">
+                                <div className="card-content" >
+                                    
+                                    <p> {pokemon.name}</p>
+                                    <p> {FormDate(pokemon.created)}</p>
+                                    <div>
+                                    {pokemon.types.map((type,index)=>{
+                                            return <div key={index} className={FormatType(type)}>{type}</div>
+                                        })}
+                                    </div>
+                                </div>
+                        </div>
+                        
+                    </div>
+              
                 </div>
-                <div className="card-stacked">
-                        <div className="card-content" >
-                            
-                            <p> {pokemon.name}</p>
-                            <p> {FormDate(pokemon.created)}</p>
-                            <div>
-                            {pokemon.types.map((type,index)=>{
-                                    return <div key={index} className={FormatType(type)}>{type}</div>
-                                })}
-                            </div>
-                               
-                            
-                         </div>
-                </div>
-                
-              </div>
-        </div>
+            
+        
+   
     )
 }
 
