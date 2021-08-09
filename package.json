@@ -18,7 +18,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "start:api": "json-server --watch src/models/db.json --port=3001",
     "build": "react-scripts build"
+  
   },
   "eslintConfig": {
     "extends": "react-app"

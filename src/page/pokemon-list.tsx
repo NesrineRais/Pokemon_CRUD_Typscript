@@ -1,15 +1,15 @@
 import React , {FunctionComponent, useState,  useEffect} from "react";
 import Pokemon from "../models/pokemon";
-import POKEMONS from '../models/mock-pokemon'
 import PokemonCard from "../components/pokemon-card";
-
+import PokemonApi from "../api/pokemon-api"
 
 const PokemonList: FunctionComponent = () =>{
     const [pokmons, setPokemons] = useState<Pokemon[]> ([]);
 
     useEffect(() => {
-        setPokemons(POKEMONS)
-        
+        //methode static
+        PokemonApi.getPokemons().then(pokemons => setPokemons(pokemons))
+
      }, [])
      return(
         <div className="container">

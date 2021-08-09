@@ -4,6 +4,7 @@ import Pokemon from '../models/pokemon';
 import POKEMONS from '../models/mock-pokemon';
 import formatDate from '../helpers/format-date';
 import formatType from '../helpers/format-type';
+import PokemonApi from '../api/pokemon-api';
 
 type Params={
     id:string
@@ -13,11 +14,12 @@ const PokemonDetail : FunctionComponent<RouteComponentProps<Params>>=({match})=>
     const [pokemon,setPokemons]=useState<Pokemon|null>(null)
     
     useEffect(()=>{
-       POKEMONS.forEach((pokemon)=>{
-           if(match.params.id===pokemon.id.toString()){
+        PokemonApi.getPokemon(+match.params.id).then((pokemon)=>{
             setPokemons(pokemon)
-           }
-       })
+        })
+
+    //parseInt(match.params.id) = +match.params.id
+     
        
     },[match.params.id])
     
