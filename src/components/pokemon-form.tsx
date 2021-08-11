@@ -119,15 +119,12 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
            pokemone.hp = form.hp.value
            pokemone.cp = form.cp.value
            pokemone.types = form.types.value
-            PokemonApi.updatePokemn(pokemone).then((pokemon)=>{
-                
-                history.push(`/List/${pokemone.id}`)
-            })
-           
-
+            PokemonApi.updatePokemn(pokemone)
+                .then((pokemon)=>{ history.push(`/List/${pokemone.id}`)})
         }
 
     }
+    
 
     //methode verification régle des champs
     const valiateForm =() =>{
@@ -195,9 +192,9 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
     return(
         <div>
             <button onClick={deletePokemon} className="right">
-                                <span className="material-icons  md-18">
-                                    delete
-                                </span>                     
+                <span className="material-icons  md-18">
+                    delete
+                </span>                     
             </button>
             <form onSubmit={e=>handleSubmit(e)}>
                     <div className="row">
