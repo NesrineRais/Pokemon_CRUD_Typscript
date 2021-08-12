@@ -9,13 +9,15 @@ type Props={
 
 const Header : FunctionComponent<Props>=()=>{
     return(
-        <nav>
-           <div className="container">
+      
+           <div className="header-nav">
+                  <nav>
+                        <Link to="/List">List Pokemon</Link> 
+                        <Link to="/Add">Add Pokemon</Link>
+                  </nav>
                 
-                    <Link to="/List">List Pokemon</Link>
-               
+
             </div>
-        </nav>
         
     )
 }

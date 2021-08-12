@@ -9,7 +9,7 @@ import {Route, Switch} from 'react-router-dom';
 import PageNotFound from './page/page-not-found';
 import PokemonForm from './components/pokemon-form';
 import PokemonEdit from './page/pokemon-edit';
-
+import PokemonAdd from './page/pokemon-add';
 
 const App: FunctionComponent = (props) => {
  //const name: String = 'React';
@@ -34,6 +34,7 @@ useEffect(() => {
          <Route exact path="/List/:id" component={PokemonDetail} />
          <Route exact path="/Form" component={PokemonForm} />
          <Route  exact path="/Edit/:id" component={PokemonEdit} />
+         <Route  exact path="/Add" component={PokemonAdd} />
         <Route component={PageNotFound}/> {/* route not found */}
        </Switch>
       

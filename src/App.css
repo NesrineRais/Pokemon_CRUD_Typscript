@@ -33,16 +33,35 @@
     /* Support for IE. */
     font-feature-settings: 'liga';
   }
+.header-nav nav  {
+  text-align: left;
+  border-bottom: 1px solid grey;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-around;
+  justify-content: center;
+}
+
+
+
+
+
+.header-nav nav  a{
+    text-decoration: none;
+    font-family: 'Fjalla One', cursive;
+    color: black;
+    font-size: 18px;
+    padding: 15px;
+}
 .card.horizontal{
     border: 2px solid transparent;
     height: 250px;
 
 }
 
-.card.horizontal .card-image img{
-  height: 144px;
-}
+
 
 .chip{
   margin-top: 0;
 }
+
