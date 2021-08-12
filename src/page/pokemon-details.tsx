@@ -12,7 +12,6 @@ type Params={
 //console.log(POKEMONS)
 const PokemonDetail : FunctionComponent<RouteComponentProps<Params>>=({match})=>{
     const [pokemon,setPokemons]=useState<Pokemon|null>(null)
-    
     useEffect(()=>{
         PokemonApi.getPokemon(+match.params.id).then((pokemon)=>{
             setPokemons(pokemon)
