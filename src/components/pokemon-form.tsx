@@ -35,14 +35,15 @@ type Form = {
 
 const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
 
-    const [form, setForm] = useState<Form>({
+        const [form, setForm] = useState<Form>({
+            name: {value:pokemone.name, isValid:true},
+            hp:{value:pokemone.hp,isValid:true},
+            cp:{value:pokemone.cp,isValid:true},
+            types:{value:pokemone.types,isValid:true}
+    
+        });
         
-        name: {value:pokemone.name, isValid:true},
-        hp:{value:pokemone.hp,isValid:true},
-        cp:{value:pokemone.cp,isValid:true},
-        types:{value:pokemone.types,isValid:true}
-
-    });
+    
     //de la ligne 38 a 41 on declare les states qui représente les champs et les donné et de formulaire
     const history = useHistory();
     const [redirect, setRedirect] = useState(false)
