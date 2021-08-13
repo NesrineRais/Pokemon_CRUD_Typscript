@@ -13,12 +13,14 @@
     },
     {
       "id": 2,
-      "name": "Salamèche",
+      "name": "Salhh",
       "hp": 28,
       "cp": 6,
       "picture": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/004.png",
       "types": [
-        "Feu"
+        "Feu",
+        "Combat",
+        "Fée"
       ]
     },
     {
@@ -46,11 +48,48 @@
       "id": 9,
       "name": "Pikachu",
       "hp": 21,
-      "cp": 7,
+      "cp": "5",
       "picture": "https://assets.pokemon.com/assets/cms2/img/pokedex/detail/025.png",
       "types": [
-        "Electrik"
+        "Electrik",
+        "Plante"
       ]
+    },
+    {
+      "id": 1628856128049,
+      "hp": 100,
+      "cp": 10,
+      "name": "hello",
+      "picture": "http://...",
+      "types": [
+        "Normal",
+        "Plante",
+        "Feu"
+      ],
+      "created": "2021-08-13T12:02:08.049Z"
+    },
+    {
+      "id": 1628856533793,
+      "hp": 100,
+      "cp": 10,
+      "name": "name",
+      "picture": "http://...",
+      "types": [
+        "Normal"
+      ],
+      "created": "2021-08-13T12:08:53.793Z"
+    },
+    {
+      "id": 1628858480592,
+      "hp": "97",
+      "cp": "7",
+      "name": "PokemNesrine",
+      "picture": "http://...",
+      "types": [
+        "Normal",
+        "Vol"
+      ],
+      "created": "2021-08-13T12:41:20.592Z"
     }
   ]
 }

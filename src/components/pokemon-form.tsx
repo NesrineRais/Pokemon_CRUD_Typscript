@@ -5,6 +5,7 @@ import POKEMONS from "../models/mock-pokemon"
 import formatType from '../helpers/format-type';
 import { types } from '@babel/core';
 import PokemonApi from '../api/pokemon-api';
+import { idText } from "typescript";
 
 
 
@@ -120,8 +121,30 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
            pokemone.hp = form.hp.value
            pokemone.cp = form.cp.value
            pokemone.types = form.types.value
-            PokemonApi.updatePokemn(pokemone)
-                .then((pokemon)=>{ history.push(`/List/${pokemone.id}`)})
+           
+           const indxPoke = POKEMONS.filter((b)=>{
+              console.log(b.id)
+               return b.id === pokemone.id
+           })
+           console.log(indxPoke.length)
+          if(indxPoke.length !== 0){
+                //console.log(index.id)
+                    console.log("if")
+                        PokemonApi.updatePokemn(pokemone)
+                        .then((pokemon)=>{ history.push(`/List/${pokemone.id}`)})  
+                
+                  
+           }else{
+                console.log("else")
+                PokemonApi.addPokemon(pokemone)
+                .then((pokemon)=>{ history.push(`/List/${pokemone.id}`)})  
+           }
+           
+           
+          
+                
+           
+            
         }
 
     }
@@ -217,7 +240,7 @@ const PokemonForm : FunctionComponent<Props>=({pokemone})=>{
                                             className="form-control" 
                                             value={form.name.value}//la valeur de l input va contenir le state dans le formulaire qui contient name et sa valeur
                                             onChange={e=> handleInputChange(e)}
-                                        />
+                                     />
                                     {form.name.error && 
                                             <div className="card-panel red accent-1">
                                                 {form.name.error}

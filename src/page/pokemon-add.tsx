@@ -15,7 +15,7 @@ const PokemonAdd:  FunctionComponent = () =>{
             <div className="row">
                 <div className="col s12 m8 offset-m2">
                     <h1 className="center">Add</h1>
-                    <PokemonForm pokemone={pokemon}/>
+                     <PokemonForm pokemone={pokemon}/> 
                 </div>
             </div>
            
